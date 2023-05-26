@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CoursesService } from '../services/courses.service';
 import { map } from 'rxjs/operators';
 import { Course } from '../model/course';
+import { CoursesService } from '../services/courses.service';
 
 
 
@@ -13,6 +13,7 @@ import { Course } from '../model/course';
 export class HomeComponent implements OnInit {
 
     courses: Array<Course> = [];
+    
     constructor(private _coursesService: CoursesService) {
 
     }
