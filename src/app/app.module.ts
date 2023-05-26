@@ -36,7 +36,7 @@ import {MatMomentDateModule} from "@angular/material-moment-adapter";
         AboutComponent,
         CourseComponent,
         CoursesCardListComponent,
-        CourseDialogComponent
+        CourseDialogComponent,
     ],
     imports: [
         BrowserModule,

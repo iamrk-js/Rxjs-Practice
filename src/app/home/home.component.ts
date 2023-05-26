@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CoursesService } from '../services/courses.service';
+import { map } from 'rxjs/operators';
+import { Course } from '../model/course';
 
 
 
@@ -9,17 +12,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-
-
-
-    constructor() {
+    courses: Array<Course> = [];
+    constructor(private _coursesService: CoursesService) {
 
     }
 
-    ngOnInit() {
-
-
-
+    ngOnInit(): void {
+        this._coursesService.getAllCourses()
+            .pipe(
+                map(res => res['payload'])
+            )
+            .subscribe(
+                res => {
+                    this.courses = res;
+                }
+            )
     }
+
 
 }
