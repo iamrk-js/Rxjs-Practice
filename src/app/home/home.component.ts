@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { Course } from '../model/course';
 import { CoursesService } from '../services/courses.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -13,8 +14,12 @@ import { CoursesService } from '../services/courses.service';
 export class HomeComponent implements OnInit {
 
     courses: Array<Course> = [];
-    beginnersCourses: Array<Course> = []
-    advanceCourses: Array<Course> = []
+    beginnersCourses: Array<Course> = [];
+    advanceCourses: Array<Course> = [];
+
+    beginnersCourses$!: Observable<Array<Course>>
+    advanceCourses$!: Observable<Array<Course>>
+
     constructor(private _coursesService: CoursesService) {
 
     }
@@ -22,17 +27,26 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         let courses$ = this._coursesService.getAllCourses()
             .pipe(
-                map(res => res['payload'])
+                map(res => res['payload']),
+                shareReplay()
             );
 
-        courses$
-            .subscribe(
-                res => {
-                    this.courses = res;
-                    this.beginnersCourses = res.filter(course => course.category === "BEGINNER");
-                    this.advanceCourses = res.filter(course => course.category === "ADVANCED")
-                }
+        this.beginnersCourses$ = courses$
+            .pipe(
+                map(course => course.filter(c => c.category === "BEGINNER"))
             )
+            this.advanceCourses$ = courses$
+            .pipe(
+                map(course => course.filter(c => c.category === "ADVANCED"))
+            )
+        // courses$
+        //     .subscribe(
+        //         res => {
+        //             this.courses = res;
+        //             this.beginnersCourses = res.filter(course => course.category === "BEGINNER");
+        //             this.advanceCourses = res.filter(course => course.category === "ADVANCED")
+        //         }
+        //     )
     }
 
 
