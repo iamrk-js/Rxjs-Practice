@@ -1,12 +1,10 @@
-
-
 .course-card {
-    margin: 20px 10px;
+  margin: 20px 10px;
 }
 
-.course-actions {
-    display: flex;
-  justify-content: center;
+.mdc-card__actions {
+  display: flex;
+  justify-content: space-between;
 }
 
 .course-actions button {

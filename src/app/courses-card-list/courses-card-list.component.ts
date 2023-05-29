@@ -1,7 +1,8 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {Course} from "../model/course";
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Course } from "../model/course";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import {CourseDialogComponent} from "../course-dialog/course-dialog.component";
+import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-course-card-list',
@@ -10,16 +11,17 @@ import {CourseDialogComponent} from "../course-dialog/course-dialog.component";
 })
 export class CoursesCardListComponent implements OnInit {
 
-    @Input('courses') courses :Course[] = []
+    @Input('courses') courses: Course[] = []
+
 
     constructor(private dialog: MatDialog) {
     }
 
     ngOnInit() {
-
+      
     }
 
-   
+
 
 }
 
