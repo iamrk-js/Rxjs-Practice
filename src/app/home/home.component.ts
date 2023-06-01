@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CoursesService } from '../services/courses.service';
-import { map } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 import { Course } from '../model/course';
+import { CoursesService } from '../services/courses.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -13,20 +14,39 @@ import { Course } from '../model/course';
 export class HomeComponent implements OnInit {
 
     courses: Array<Course> = [];
+    beginnersCourses: Array<Course> = [];
+    advanceCourses: Array<Course> = [];
+
+    beginnersCourses$!: Observable<Array<Course>>
+    advanceCourses$!: Observable<Array<Course>>
+
     constructor(private _coursesService: CoursesService) {
 
     }
 
     ngOnInit(): void {
-        this._coursesService.getAllCourses()
+        let courses$ = this._coursesService.getAllCourses()
             .pipe(
-                map(res => res['payload'])
+                map(res => res['payload']),
+                shareReplay()
+            );
+
+        this.beginnersCourses$ = courses$
+            .pipe(
+                map(course => course.filter(c => c.category === "BEGINNER"))
             )
-            .subscribe(
-                res => {
-                    this.courses = res;
-                }
+            this.advanceCourses$ = courses$
+            .pipe(
+                map(course => course.filter(c => c.category === "ADVANCED"))
             )
+        // courses$
+        //     .subscribe(
+        //         res => {
+        //             this.courses = res;
+        //             this.beginnersCourses = res.filter(course => course.category === "BEGINNER");
+        //             this.advanceCourses = res.filter(course => course.category === "ADVANCED")
+        //         }
+        //     )
     }
 
 
